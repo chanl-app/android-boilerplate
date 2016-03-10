@@ -2,12 +2,18 @@ apply plugin: 'com.android.application'
 apply from: '../config/quality/quality.gradle'
 apply plugin: 'com.github.triplet.play'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'me.tatarka.retrolambda'
 //TODO uncomment line below after adding fabric api secret and key to fabric.properties
 //apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 23
     buildToolsVersion '23.0.2'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     defaultConfig {
         applicationId 'uk.co.ribot.androidboilerplate'
@@ -80,7 +86,7 @@ play {
 
 dependencies {
     final PLAY_SERVICES_VERSION = '8.4.0'
-    final SUPPORT_LIBRARY_VERSION = '23.1.1'
+    final SUPPORT_LIBRARY_VERSION = '23.2.0'
     final RETROFIT_VERSION = '2.0.0-beta3'
     final DAGGER_VERSION = '2.0.2'
     final DEXMAKER_VERSION = '1.4'
