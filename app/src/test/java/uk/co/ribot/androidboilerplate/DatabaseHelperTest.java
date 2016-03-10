@@ -14,8 +14,6 @@ import java.util.List;
 
 import rx.observers.TestSubscriber;
 import app.westtabs.chanl.androidboilerplate.data.local.DatabaseHelper;
-import app.westtabs.chanl.androidboilerplate.data.local.Db;
-import app.westtabs.chanl.androidboilerplate.data.local.DbOpenHelper;
 import app.westtabs.chanl.androidboilerplate.data.model.Ribot;
 import app.westtabs.chanl.androidboilerplate.test.common.TestDataFactory;
 import app.westtabs.chanl.androidboilerplate.util.DefaultConfig;

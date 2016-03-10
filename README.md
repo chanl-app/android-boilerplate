@@ -6,10 +6,12 @@ Libraries and tools included:
 
 - Support libraries
 - RecyclerViews and CardViews 
-- [RxJava](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid) 
+- [RxJava](https://github.com/ReactiveX/RxJava) and [RxAndroid](https://github.com/ReactiveX/RxAndroid)
+- [Retrolambda](https://plugins.gradle.org/plugin/me.tatarka.retrolambda)
 - [Retrofit 2](http://square.github.io/retrofit/)
 - [Dagger 2](http://google.github.io/dagger/)
-- [SqlBrite](https://github.com/square/sqlbrite)
+- [Green Dao](http://greenrobot.org/greendao/)
+- [Permissions Dispatcher](https://github.com/hotchemi/PermissionsDispatcher)
 - [Butterknife](https://github.com/JakeWharton/butterknife)
 - [Timber](https://github.com/JakeWharton/timber)
 - [Picasso](http://square.github.io/picasso/)
