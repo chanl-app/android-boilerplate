@@ -1,4 +1,4 @@
-package uk.co.ribot.androidboilerplate.util;
+package app.westtabs.chanl.androidboilerplate.util;
 
 /**
  * Robolectric default config properties

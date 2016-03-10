@@ -1,4 +1,4 @@
-package uk.co.ribot.androidboilerplate.util;
+package app.westtabs.chanl.androidboilerplate.util;
 
 import org.junit.rules.TestRule;
 import org.junit.runner.Description;

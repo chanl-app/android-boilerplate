@@ -1,4 +1,4 @@
-package uk.co.ribot.androidboilerplate;
+package app.westtabs.chanl.androidboilerplate;
 
 import org.junit.After;
 import org.junit.Before;
@@ -12,12 +12,12 @@ import java.util.Collections;
 import java.util.List;
 
 import rx.Observable;
-import uk.co.ribot.androidboilerplate.data.DataManager;
-import uk.co.ribot.androidboilerplate.data.model.Ribot;
-import uk.co.ribot.androidboilerplate.test.common.TestDataFactory;
-import uk.co.ribot.androidboilerplate.ui.main.MainMvpView;
-import uk.co.ribot.androidboilerplate.ui.main.MainPresenter;
-import uk.co.ribot.androidboilerplate.util.RxSchedulersOverrideRule;
+import app.westtabs.chanl.androidboilerplate.data.DataManager;
+import app.westtabs.chanl.androidboilerplate.data.model.Ribot;
+import app.westtabs.chanl.androidboilerplate.test.common.TestDataFactory;
+import app.westtabs.chanl.androidboilerplate.ui.main.MainMvpView;
+import app.westtabs.chanl.androidboilerplate.ui.main.MainPresenter;
+import app.westtabs.chanl.androidboilerplate.util.RxSchedulersOverrideRule;
 
 import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Mockito.doReturn;

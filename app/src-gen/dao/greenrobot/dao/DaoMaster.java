@@ -5,6 +5,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import javax.inject.Inject;
+
+import app.westtabs.chanl.androidboilerplate.injection.ApplicationContext;
+import dagger.Provides;
 import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 
@@ -26,8 +31,10 @@ public class DaoMaster extends AbstractDaoMaster {
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
         UserDao.dropTable(db, ifExists);
     }
-    
+
+
     public static abstract class OpenHelper extends SQLiteOpenHelper {
+
 
         public OpenHelper(Context context, String name, CursorFactory factory) {
             super(context, name, factory, SCHEMA_VERSION);
@@ -42,6 +49,8 @@ public class DaoMaster extends AbstractDaoMaster {
     
     /** WARNING: Drops all table on Upgrade! Use only during development. */
     public static class DevOpenHelper extends OpenHelper {
+
+
         public DevOpenHelper(Context context, String name, CursorFactory factory) {
             super(context, name, factory);
         }
