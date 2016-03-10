@@ -48,7 +48,7 @@ public class DatabaseHelperTest {
         result.assertNoErrors();
         result.assertReceivedOnNext(ribots);
 
-        Cursor cursor = mDatabaseHelper.getBriteDb()
+        Cursor cursor = mDatabaseHelper.getDaoSession()
                 .query("SELECT * FROM " + Db.RibotProfileTable.TABLE_NAME);
         assertEquals(2, cursor.getCount());
         for (Ribot ribot : ribots) {
