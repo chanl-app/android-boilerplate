@@ -12,7 +12,7 @@ import app.westtabs.chanl.androidboilerplate.data.DataManager;
 import app.westtabs.chanl.androidboilerplate.data.SyncService;
 import app.westtabs.chanl.androidboilerplate.data.local.DatabaseHelper;
 import app.westtabs.chanl.androidboilerplate.data.local.PreferencesHelper;
-import app.westtabs.chanl.androidboilerplate.data.remote.RibotsService;
+import app.westtabs.chanl.androidboilerplate.data.remote.ApiService;
 import app.westtabs.chanl.androidboilerplate.injection.ApplicationContext;
 import app.westtabs.chanl.androidboilerplate.injection.module.ApplicationModule;
 
@@ -24,7 +24,7 @@ public interface ApplicationComponent {
 
     @ApplicationContext Context context();
     Application application();
-    RibotsService ribotsService();
+    ApiService ribotsService();
     PreferencesHelper preferencesHelper();
     DatabaseHelper databaseHelper();
     DataManager dataManager();

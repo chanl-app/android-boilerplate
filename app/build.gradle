@@ -16,8 +16,8 @@ android {
     }
 
     defaultConfig {
-        applicationId 'uk.co.ribot.androidboilerplate'
-        minSdkVersion 16
+        applicationId 'app.westtabs.androidboilerplate'
+        minSdkVersion 9
         targetSdkVersion 23
         testInstrumentationRunner "${applicationId}.runner.RxAndroidJUnitRunner"
         versionCode 1000

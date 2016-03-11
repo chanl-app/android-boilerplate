@@ -1,13 +1,6 @@
 package app.westtabs.chanl.androidboilerplate.test.common;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-
-import app.westtabs.chanl.androidboilerplate.data.model.Name;
-import app.westtabs.chanl.androidboilerplate.data.model.Profile;
-import app.westtabs.chanl.androidboilerplate.data.model.Ribot;
+import dao.greenrobot.dao.User;
 
 /**
  * Factory class that makes instances of data models with random field values.
@@ -15,38 +8,20 @@ import app.westtabs.chanl.androidboilerplate.data.model.Ribot;
  */
 public class TestDataFactory {
 
-    public static String randomUuid() {
-        return UUID.randomUUID().toString();
+
+    public static User makeProfile(String uniqueSuffix) {
+        User user = new User();
+//            user.setUsername("");
+        return user;
     }
 
-    public static Ribot makeRibot(String uniqueSuffix) {
-        return new Ribot(makeProfile(uniqueSuffix));
-    }
-
-    public static List<Ribot> makeListRibots(int number) {
-        List<Ribot> ribots = new ArrayList<>();
-        for (int i = 0; i < number; i++) {
-            ribots.add(makeRibot(String.valueOf(i)));
-        }
-        return ribots;
-    }
-
-    public static Profile makeProfile(String uniqueSuffix) {
-        Profile profile = new Profile();
-        profile.email = "email" + uniqueSuffix + "@ribot.co.uk";
-        profile.name = makeName(uniqueSuffix);
-        profile.dateOfBirth = new Date();
-        profile.hexColor = "#0066FF";
-        profile.avatar = "http://api.ribot.io/images/" + uniqueSuffix;
-        profile.bio = randomUuid();
-        return profile;
-    }
-
-    public static Name makeName(String uniqueSuffix) {
-        Name name = new Name();
-        name.first = "Name-" + uniqueSuffix;
-        name.last = "Surname-" + uniqueSuffix;
-        return name;
-    }
-
+//    public static List<Repo> makeListRepos(int num) {
+//        List<Repo> list = new ArrayList<>(num);
+//        for (int i = 0; i < num; i++) {
+//            Repo r = new Repo();
+//            r.setName(df.getName());
+//            r.setDescription(df.);
+//        }
+//        return list;
+//    }
 }

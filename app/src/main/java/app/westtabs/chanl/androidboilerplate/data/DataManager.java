@@ -5,25 +5,25 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import rx.Observable;
-import rx.functions.Action0;
-import rx.functions.Func1;
 import app.westtabs.chanl.androidboilerplate.data.local.DatabaseHelper;
 import app.westtabs.chanl.androidboilerplate.data.local.PreferencesHelper;
-import app.westtabs.chanl.androidboilerplate.data.model.Ribot;
-import app.westtabs.chanl.androidboilerplate.data.remote.RibotsService;
+import app.westtabs.chanl.androidboilerplate.data.remote.ApiService;
 import app.westtabs.chanl.androidboilerplate.util.EventPosterHelper;
+import dao.greenrobot.dao.Repo;
+import dao.greenrobot.dao.User;
+import rx.Observable;
+import rx.functions.Action0;
 
 @Singleton
 public class DataManager {
 
-    private final RibotsService mRibotsService;
+    private final ApiService mRibotsService;
     private final DatabaseHelper mDatabaseHelper;
     private final PreferencesHelper mPreferencesHelper;
     private final EventPosterHelper mEventPoster;
 
     @Inject
-    public DataManager(RibotsService ribotsService, PreferencesHelper preferencesHelper,
+    public DataManager(ApiService ribotsService, PreferencesHelper preferencesHelper,
                        DatabaseHelper databaseHelper, EventPosterHelper eventPosterHelper) {
         mRibotsService = ribotsService;
         mPreferencesHelper = preferencesHelper;
@@ -35,29 +35,27 @@ public class DataManager {
         return mPreferencesHelper;
     }
 
-    public Observable<Ribot> syncRibots() {
-        return mRibotsService.getRibots()
-                .concatMap(new Func1<List<Ribot>, Observable<Ribot>>() {
-                    @Override
-                    public Observable<Ribot> call(List<Ribot> ribots) {
-                        return mDatabaseHelper.setRibots(ribots);
-                    }
-                });
+    public Observable<User> syncUser(String username) {
+        return mRibotsService.getUser(username)
+                .doOnNext(mDatabaseHelper::setUser);
     }
 
-    public Observable<List<Ribot>> getRibots() {
-        return mDatabaseHelper.getRibots().distinct();
+    public Observable<List<Repo>> syncUserRepos(String username) {
+        return mRibotsService.getUserRepos(username);
+//                .doOnNext(repos -> postEventAction(new OnReposListReadyEvent(repos)));
     }
 
+    public Observable<List<Repo>> getRepos() {
+        return mDatabaseHelper.getUserRepos();
+    }
+
+    public Observable<Repo> saveRepo(Repo repo) {
+        return mDatabaseHelper.saveRepo(repo);
+    }
 
     /// Helper method to post events from doOnCompleted.
     private Action0 postEventAction(final Object event) {
-        return new Action0() {
-            @Override
-            public void call() {
-                mEventPoster.postEventSafely(event);
-            }
-        };
+        return () -> mEventPoster.postEventSafely(event);
     }
 
 }

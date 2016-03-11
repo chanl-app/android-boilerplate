@@ -2,25 +2,25 @@ package app.westtabs.chanl.androidboilerplate.data.local;
 
 import android.content.Context;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import app.westtabs.chanl.androidboilerplate.injection.ApplicationContext;
-import dagger.Provides;
 import dao.greenrobot.dao.DaoMaster;
 import dao.greenrobot.dao.DaoSession;
+import dao.greenrobot.dao.Repo;
+import dao.greenrobot.dao.User;
+import dao.greenrobot.dao.UserDao;
 import rx.Observable;
 import rx.Subscriber;
-import app.westtabs.chanl.androidboilerplate.data.model.Ribot;
 
 @Singleton
 public class DatabaseHelper {
 
     private final DaoSession daoSession;
-    DaoMaster.OpenHelper dbOpenHelper;
+    DaoMaster.DevOpenHelper dbOpenHelper;
 
 
     @Inject
@@ -34,37 +34,37 @@ public class DatabaseHelper {
         return daoSession;
     }
 
-    /**
-     * Remove all the data from all the tables in the database.
-     */
-    public Observable<Void> clearTables() {
-        return Observable.create(new Observable.OnSubscribe<Void>() {
+
+    public Observable<User> setUser(User user) {
+        return Observable.create(new Observable.OnSubscribe<User>() {
             @Override
-            public void call(Subscriber<? super Void> subscriber) {
+            public void call(Subscriber<? super User> subscriber) {
                 if (subscriber.isUnsubscribed()) return;
-
-
-                //todo logic to clear table
+                UserDao userDao = getDaoSession().getUserDao();
+                if (userDao.insert(user) > 0) subscriber.onNext(user);
+                subscriber.onCompleted();
             }
         });
     }
 
-    public Observable<Ribot> setRibots(final Collection<Ribot> newRibots) {
-        return Observable.create(new Observable.OnSubscribe<Ribot>() {
+    public Observable<List<Repo>> getUserRepos() {
+        return Observable.create(new Observable.OnSubscribe<List<Repo>>() {
             @Override
-            public void call(Subscriber<? super Ribot> subscriber) {
+            public void call(Subscriber<? super List<Repo>> subscriber) {
                 if (subscriber.isUnsubscribed()) return;
-
+                subscriber.onNext(getDaoSession().getRepoDao()
+                        .queryBuilder()
+                        .list());
             }
         });
     }
 
-    public Observable<List<Ribot>> getRibots() {
-        return Observable.create(new Observable.OnSubscribe<List<Ribot>>() {
-            @Override
-            public void call(Subscriber<? super List<Ribot>> subscriber) {
-                if (subscriber.isUnsubscribed()) return;
-            }
+    public Observable<Repo> saveRepo(Repo repo) {
+        return Observable.create((Observable.OnSubscribe<Repo>) subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            long id = getDaoSession().getRepoDao().insert(repo);
+            if (id > 0) subscriber.onNext(repo);
+
         });
     }
 

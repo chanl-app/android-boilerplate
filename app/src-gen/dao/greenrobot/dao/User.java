@@ -8,9 +8,9 @@ public class User {
 
     private Long id;
     /** Not-null value. */
-    private String userId;
-    private String username;
-    private String avatar;
+    private String login;
+    private String name;
+    private String avatar_url;
 
     public User() {
     }
@@ -19,11 +19,11 @@ public class User {
         this.id = id;
     }
 
-    public User(Long id, String userId, String username, String avatar) {
+    public User(Long id, String login, String name, String avatar_url) {
         this.id = id;
-        this.userId = userId;
-        this.username = username;
-        this.avatar = avatar;
+        this.login = login;
+        this.name = name;
+        this.avatar_url = avatar_url;
     }
 
     public Long getId() {
@@ -35,29 +35,29 @@ public class User {
     }
 
     /** Not-null value. */
-    public String getUserId() {
-        return userId;
+    public String getLogin() {
+        return login;
     }
 
     /** Not-null value; ensure this value is available before it is saved to the database. */
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setLogin(String login) {
+        this.login = login;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getAvatar() {
-        return avatar;
+    public String getAvatar_url() {
+        return avatar_url;
     }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
     }
 
 }

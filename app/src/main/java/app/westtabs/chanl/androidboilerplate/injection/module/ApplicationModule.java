@@ -8,12 +8,10 @@ import com.squareup.otto.Bus;
 import javax.inject.Singleton;
 
 import app.westtabs.chanl.androidboilerplate.data.local.DatabaseHelper;
+import app.westtabs.chanl.androidboilerplate.data.remote.ApiService;
 import dagger.Module;
 import dagger.Provides;
-import app.westtabs.chanl.androidboilerplate.data.remote.RibotsService;
 import app.westtabs.chanl.androidboilerplate.injection.ApplicationContext;
-import dao.greenrobot.dao.DaoMaster;
-import dao.greenrobot.dao.DaoSession;
 
 /**
  * Provide application-level dependencies.
@@ -45,8 +43,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    RibotsService provideRibotsService() {
-        return RibotsService.Creator.newRibotsService();
+    ApiService provideRibotsService() {
+        return ApiService.Creator.newRibotsService();
     }
 
     @Provides

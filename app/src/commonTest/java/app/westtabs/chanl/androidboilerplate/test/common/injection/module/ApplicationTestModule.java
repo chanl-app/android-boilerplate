@@ -7,10 +7,10 @@ import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
 
+import app.westtabs.chanl.androidboilerplate.data.remote.ApiService;
 import dagger.Module;
 import dagger.Provides;
 import app.westtabs.chanl.androidboilerplate.data.DataManager;
-import app.westtabs.chanl.androidboilerplate.data.remote.RibotsService;
 import app.westtabs.chanl.androidboilerplate.injection.ApplicationContext;
 
 import static org.mockito.Mockito.mock;
@@ -55,8 +55,8 @@ public class ApplicationTestModule {
 
     @Provides
     @Singleton
-    RibotsService provideRibotsService() {
-        return mock(RibotsService.class);
+    ApiService provideRibotsService() {
+        return mock(ApiService.class);
     }
 
 }

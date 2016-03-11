@@ -24,9 +24,9 @@ public class UserDao extends AbstractDao<User, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property UserId = new Property(1, String.class, "userId", false, "USER_ID");
-        public final static Property Username = new Property(2, String.class, "username", false, "USERNAME");
-        public final static Property Avatar = new Property(3, String.class, "avatar", false, "AVATAR");
+        public final static Property Login = new Property(1, String.class, "login", false, "LOGIN");
+        public final static Property Name = new Property(2, String.class, "name", false, "NAME");
+        public final static Property Avatar_url = new Property(3, String.class, "avatar_url", false, "AVATAR_URL");
     };
 
 
@@ -43,9 +43,9 @@ public class UserDao extends AbstractDao<User, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"USER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"USER_ID\" TEXT NOT NULL UNIQUE ," + // 1: userId
-                "\"USERNAME\" TEXT," + // 2: username
-                "\"AVATAR\" TEXT);"); // 3: avatar
+                "\"LOGIN\" TEXT NOT NULL UNIQUE ," + // 1: login
+                "\"NAME\" TEXT," + // 2: name
+                "\"AVATAR_URL\" TEXT);"); // 3: avatar_url
     }
 
     /** Drops the underlying database table. */
@@ -63,16 +63,16 @@ public class UserDao extends AbstractDao<User, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindString(2, entity.getUserId());
+        stmt.bindString(2, entity.getLogin());
  
-        String username = entity.getUsername();
-        if (username != null) {
-            stmt.bindString(3, username);
+        String name = entity.getName();
+        if (name != null) {
+            stmt.bindString(3, name);
         }
  
-        String avatar = entity.getAvatar();
-        if (avatar != null) {
-            stmt.bindString(4, avatar);
+        String avatar_url = entity.getAvatar_url();
+        if (avatar_url != null) {
+            stmt.bindString(4, avatar_url);
         }
     }
 
@@ -87,9 +87,9 @@ public class UserDao extends AbstractDao<User, Long> {
     public User readEntity(Cursor cursor, int offset) {
         User entity = new User( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getString(offset + 1), // userId
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // username
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // avatar
+            cursor.getString(offset + 1), // login
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // name
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // avatar_url
         );
         return entity;
     }
@@ -98,9 +98,9 @@ public class UserDao extends AbstractDao<User, Long> {
     @Override
     public void readEntity(Cursor cursor, User entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setUserId(cursor.getString(offset + 1));
-        entity.setUsername(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setAvatar(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setLogin(cursor.getString(offset + 1));
+        entity.setName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setAvatar_url(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
      }
     
     /** @inheritdoc */

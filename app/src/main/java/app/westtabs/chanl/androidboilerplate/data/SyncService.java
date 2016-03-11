@@ -10,13 +10,10 @@ import android.util.Log;
 
 import javax.inject.Inject;
 
-import rx.Observer;
-import rx.Subscription;
-import rx.schedulers.Schedulers;
 import app.westtabs.chanl.androidboilerplate.BoilerplateApplication;
-import app.westtabs.chanl.androidboilerplate.data.model.Ribot;
 import app.westtabs.chanl.androidboilerplate.util.AndroidComponentUtil;
 import app.westtabs.chanl.androidboilerplate.util.NetworkUtil;
+import rx.Subscription;
 
 public class SyncService extends Service {
 
@@ -53,26 +50,26 @@ public class SyncService extends Service {
         }
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-        mSubscription = mDataManager.syncRibots()
-                .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<Ribot>() {
-                    @Override
-                    public void onCompleted() {
-                        Log.d(TAG, "onCompleted: Synced successfully!");
-                        stopSelf(startId);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "onError: Error syncing.");
-                        stopSelf(startId);
-
-                    }
-
-                    @Override
-                    public void onNext(Ribot ribot) {
-                    }
-                });
+//        mSubscription = mDataManager.syncUser()
+//                .subscribeOn(Schedulers.io())
+//                .subscribe(new Observer<User>() {
+//                    @Override
+//                    public void onCompleted() {
+//                        Log.d(TAG, "onCompleted: Synced successfully!");
+//                        stopSelf(startId);
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        Log.d(TAG, "onError: Error syncing.");
+//                        stopSelf(startId);
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(User ribot) {
+//                    }
+//                });
 
         return START_STICKY;
     }
