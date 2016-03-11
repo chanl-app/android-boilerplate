@@ -13,7 +13,7 @@ public interface MainMvpView extends MvpView {
     void showRibotsEmpty();
     void showError();
 
-    void showUser(User user);
+    Void showUser(User user);
 
     void showToast(String text);
 

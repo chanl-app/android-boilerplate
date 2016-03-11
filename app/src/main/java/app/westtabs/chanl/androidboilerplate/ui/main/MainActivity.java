@@ -117,12 +117,13 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     }
 
     @Override
-    public void showUser(User user) {
+    public Void showUser(User user) {
         runOnUiThread(() -> {
             login.setText(user.getLogin());
             name.setText(user.getName());
             Glide.with(MainActivity.this).load(user.getAvatar_url()).into(userAvatar);
         });
+        return null;
     }
 
     @Override

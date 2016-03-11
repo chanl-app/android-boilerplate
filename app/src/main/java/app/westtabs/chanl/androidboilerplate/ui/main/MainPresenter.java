@@ -4,6 +4,7 @@ import javax.inject.Inject;
 
 import app.westtabs.chanl.androidboilerplate.data.DataManager;
 import app.westtabs.chanl.androidboilerplate.ui.base.BasePresenter;
+import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -35,7 +36,8 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
         checkViewAttached();
 
         mSubscription = mDataManager.syncUser(username)
-                .doOnNext(user -> getMvpView().showUser(user))
+                .doOnNext(user -> Observable.just(getMvpView().showUser(user))
+                        .observeOn(AndroidSchedulers.mainThread()))
                 .flatMap(user -> mDataManager.syncUserRepos(user.getLogin()))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
