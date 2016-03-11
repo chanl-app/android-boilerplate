@@ -145,6 +145,7 @@ dependencies {
     androidTestCompile "com.crittercism.dexmaker:dexmaker:$DEXMAKER_VERSION"
     androidTestCompile "com.crittercism.dexmaker:dexmaker-dx:$DEXMAKER_VERSION"
     androidTestCompile "com.crittercism.dexmaker:dexmaker-mockito:$DEXMAKER_VERSION"
+    compile 'org.fluttercode.datafactory:datafactory:0.8'
 
     // Unit tests dependencies
     testCompile jUnit
