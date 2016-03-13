@@ -26,11 +26,14 @@ import dao.greenrobot.dao.Repo;
 @RunWith(MockitoJUnitRunner.class)
 public class DataManagerTest {
 
-    @Mock DatabaseHelper mMockDatabaseHelper;
-    @Mock PreferencesHelper mMockPreferencesHelper;
+    @Mock
+    DatabaseHelper mMockDatabaseHelper;
+    @Mock
+    PreferencesHelper mMockPreferencesHelper;
     @Mock
     ApiService mMockRibotsService;
-    @Mock EventPosterHelper mEventPosterHelper;
+    @Mock
+    EventPosterHelper mEventPosterHelper;
     private DataManager mDataManager;
 
     @Before
@@ -60,7 +63,7 @@ public class DataManagerTest {
 //        mDataManager.syncUser().subscribe();
 //        // Verify right calls to helper methods
 //        verify(mMockRibotsService).getUserRepos();
-//        verify(mMockDatabaseHelper).setUser(ribots);
+//        verify(mMockDatabaseHelper).saveUser(ribots);
     }
 
     @Test
@@ -71,14 +74,14 @@ public class DataManagerTest {
 //        mDataManager.syncUser().subscribe(new TestSubscriber<Ribot>());
 //        // Verify right calls to helper methods
 //        verify(mMockRibotsService).getUserRepos();
-//        verify(mMockDatabaseHelper, never()).setUser(anyListOf(Ribot.class));
+//        verify(mMockDatabaseHelper, never()).saveUser(anyListOf(Ribot.class));
     }
 
     private void stubSyncRibotsHelperCalls(List<Repo> ribots) {
 //        // Stub calls to the ribot service and database helper.
 //        when(mMockRibotsService.getUserRepos())
 //                .thenReturn(Observable.just(ribots));
-//        when(mMockDatabaseHelper.setUser(ribots))
+//        when(mMockDatabaseHelper.saveUser(ribots))
 //                .thenReturn(Observable.from(ribots));
     }
 

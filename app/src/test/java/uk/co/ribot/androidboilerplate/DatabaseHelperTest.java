@@ -4,10 +4,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
 
+import java.util.Arrays;
+import java.util.List;
+
 import app.westtabs.chanl.androidboilerplate.BuildConfig;
+import app.westtabs.chanl.androidboilerplate.data.local.DatabaseHelper;
+import app.westtabs.chanl.androidboilerplate.test.common.TestDataFactory;
 import app.westtabs.chanl.androidboilerplate.util.DefaultConfig;
+import dao.greenrobot.dao.Repo;
+import dao.greenrobot.dao.User;
+import rx.Observable;
+import rx.observers.TestSubscriber;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Unit tests integration with a SQLite Database using Robolectric
@@ -16,45 +28,44 @@ import app.westtabs.chanl.androidboilerplate.util.DefaultConfig;
 @Config(constants = BuildConfig.class, sdk = DefaultConfig.EMULATE_SDK)
 public class DatabaseHelperTest {
 
-//    private final DatabaseHelper mDatabaseHelper = new DatabaseHelper(new DbOpenHelper(RuntimeEnvironment.application));
+    private final DatabaseHelper mDatabaseHelper = new DatabaseHelper(RuntimeEnvironment.application);
 
     @Before
     public void setUp() {
-//        mDatabaseHelper.clearTables().subscribe();
+        mDatabaseHelper.clearTables().subscribe();
     }
 
     @Test
-    public void setRibots() {
-//        Ribot ribot1 = TestDataFactory.makeRibot("r1");
-//        Ribot ribot2 = TestDataFactory.makeRibot("r2");
-//        List<Ribot> ribots = Arrays.asList(ribot1, ribot2);
-//
-//        TestSubscriber<Ribot> result = new TestSubscriber<>();
-////        mDatabaseHelper.setUser(ribots).subscribe(result);
-//        result.assertNoErrors();
-//        result.assertReceivedOnNext(ribots);
+    public void saveUser() {
+        User user1 = TestDataFactory.generateUser();
+        User user2 = TestDataFactory.generateUser();
+        List<User> users = Arrays.asList(user1, user2);
 
-//        Cursor cursor = mDatabaseHelper.getDaoSession()
-//                .query("SELECT * FROM " + Db.RibotProfileTable.TABLE_NAME);
-//        assertEquals(2, cursor.getCount());
-//        for (Ribot ribot : ribots) {
-//            cursor.moveToNext();
-//            assertEquals(ribot.profile, Db.RibotProfileTable.parseCursor(cursor));
-//        }
+        TestSubscriber<User> result = new TestSubscriber<>();
+        Observable.from(users)
+                .flatMap(mDatabaseHelper::saveUser)
+                .subscribe(result);
+
+        result.assertNoErrors();
+        result.assertReceivedOnNext(users);
+
+        List<User> query = mDatabaseHelper.getDaoSession().getUserDao().loadAll();
+        assertThat(query.size()).isEqualTo(2);
+        assertThat(query).contains(user1, user2);
     }
 
     @Test
-    public void getRibots() {
-//        Ribot ribot1 = TestDataFactory.makeRibot("r1");
-//        Ribot ribot2 = TestDataFactory.makeRibot("r2");
-//        List<Ribot> ribots = Arrays.asList(ribot1, ribot2);
-//
-////        mDatabaseHelper.setUser(ribots).subscribe();
-//
-//        TestSubscriber<List<Ribot>> result = new TestSubscriber<>();
-////        mDatabaseHelper.getUserRepos().subscribe(result);
-//        result.assertNoErrors();
-//        result.assertValue(ribots);
+    public void getRepos() {
+        List<Repo> repos = TestDataFactory.makeListRepos(2);
+
+        Observable.from(repos)
+                .map(mDatabaseHelper::saveRepo)
+                .subscribe();
+
+        TestSubscriber<List<Repo>> result = new TestSubscriber<>();
+        mDatabaseHelper.getUserRepos().subscribe(result);
+        result.assertNoErrors();
+        result.assertValue(repos);
     }
 
 }

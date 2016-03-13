@@ -9,15 +9,26 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import app.westtabs.chanl.androidboilerplate.data.DataManager;
+import app.westtabs.chanl.androidboilerplate.test.common.TestDataFactory;
 import app.westtabs.chanl.androidboilerplate.ui.main.MainMvpView;
 import app.westtabs.chanl.androidboilerplate.ui.main.MainPresenter;
 import app.westtabs.chanl.androidboilerplate.util.RxSchedulersOverrideRule;
+import dao.greenrobot.dao.Repo;
+import dao.greenrobot.dao.User;
+import rx.Observable;
+
+import static org.mockito.Matchers.anyListOf;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MainPresenterTest {
 
-    @Mock MainMvpView mMockMainMvpView;
-    @Mock DataManager mMockDataManager;
+    @Mock
+    MainMvpView mMockMainMvpView;
+    @Mock
+    DataManager mMockDataManager;
     private MainPresenter mMainPresenter;
 
     @Rule
@@ -35,39 +46,34 @@ public class MainPresenterTest {
     }
 
     @Test
-    public void loadRibotsReturnsRibots() {
-//        List<Repo> ribots = TestDataFactory.makeListRepos(10);
-//        doReturn(Observable.just(ribots))
-//                .when(mMockDataManager)
-//                .getRepos();
-//
-//        mMainPresenter.loadRepos();
-//        verify(mMockMainMvpView).showRibots(ribots);
-//        verify(mMockMainMvpView, never()).showRibotsEmpty();
-//        verify(mMockMainMvpView, never()).showError();
+    public void loadUser() {
+        User user = TestDataFactory.generateUser();
+
+        doReturn(Observable.just(TestDataFactory.makeListRepos(5)))
+                .when(mMockDataManager)
+                .syncUserRepos(user.getLogin());
+
+        doReturn(Observable.just(user))
+                .when(mMockDataManager)
+                .syncUser(user.getLogin());
+
+        mMainPresenter.getUser(user.getLogin());
+
+        verify(mMockMainMvpView).showRepos(anyListOf(Repo.class));
+
+        verify(mMockMainMvpView, never()).showError();
+        verify(mMockMainMvpView, never()).showRibotsEmpty();
     }
 
-    @Test
-    public void loadRibotsReturnsEmptyList() {
-//        doReturn(Observable.just(Collections.emptyList()))
-//                .when(mMockDataManager)
-//                .getRepos();
-//
-//        mMainPresenter.loadRepos();
-//        verify(mMockMainMvpView).showRibotsEmpty();
-//        verify(mMockMainMvpView, never()).showRibots(anyListOf(Ribot.class));
-//        verify(mMockMainMvpView, never()).showError();
-    }
+    public void loadUserFails() {
+        doReturn(Observable.empty())
+                .when(mMockDataManager)
+                .syncUser("");
 
-    @Test
-    public void loadRibotsFails() {
-//        doReturn(Observable.error(new RuntimeException()))
-//                .when(mMockDataManager)
-//                .getRepos();
-//
-//        mMainPresenter.loadRepos();
-//        verify(mMockMainMvpView).showError();
-//        verify(mMockMainMvpView, never()).showRibotsEmpty();
-//        verify(mMockMainMvpView, never()).showRibots(anyListOf(Ribot.class));
+        mMainPresenter.getUser("");
+
+        verify(mMockMainMvpView).showToast("User not found");
+        verify(mMockMainMvpView, never()).showRibotsEmpty();
+        verify(mMockMainMvpView, never()).showRepos(anyListOf(Repo.class));
     }
 }

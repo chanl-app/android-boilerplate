@@ -22,7 +22,6 @@ public class DatabaseHelper {
     private final DaoSession daoSession;
     DaoMaster.DevOpenHelper dbOpenHelper;
 
-
     @Inject
     public DatabaseHelper(@ApplicationContext Context context) {
         dbOpenHelper = new DaoMaster.DevOpenHelper(context, "app-db", null);
@@ -34,8 +33,7 @@ public class DatabaseHelper {
         return daoSession;
     }
 
-
-    public Observable<User> setUser(User user) {
+    public Observable<User> saveUser(User user) {
         return Observable.create(new Observable.OnSubscribe<User>() {
             @Override
             public void call(Subscriber<? super User> subscriber) {
@@ -52,9 +50,12 @@ public class DatabaseHelper {
             @Override
             public void call(Subscriber<? super List<Repo>> subscriber) {
                 if (subscriber.isUnsubscribed()) return;
-                subscriber.onNext(getDaoSession().getRepoDao()
-                        .queryBuilder()
-                        .list());
+                subscriber.onNext(
+                        getDaoSession()
+                                .getRepoDao()
+                                .queryBuilder()
+                                .list()
+                );
             }
         });
     }
@@ -64,8 +65,14 @@ public class DatabaseHelper {
             if (subscriber.isUnsubscribed()) return;
             long id = getDaoSession().getRepoDao().insert(repo);
             if (id > 0) subscriber.onNext(repo);
-
         });
     }
 
+    public Observable<Void> clearTables() {
+        return Observable.create((Observable.OnSubscribe<Void>) subscriber -> {
+            if (subscriber.isUnsubscribed()) return;
+            getDaoSession().getRepoDao().deleteAll();
+            getDaoSession().getUserDao().deleteAll();
+        });
+    }
 }

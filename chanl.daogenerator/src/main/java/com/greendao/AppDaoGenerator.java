@@ -14,6 +14,7 @@ public class AppDaoGenerator {
     private static final String USER_NAME = "name";
     private static final String USER_AVATAR = "avatar_url";
 
+    private static final String REPO_OWNER = "owner";
     private static final String REPO_NAME = "name";
     private static final String REPO_DESC = "description";
     private static final String REPO_URL = "html_url";

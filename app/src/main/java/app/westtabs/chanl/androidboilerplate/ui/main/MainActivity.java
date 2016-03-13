@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity implements MainMvpView {
      *****/
 
     @Override
-    public void showRibots(List<Repo> repos) {
+    public void showRepos(List<Repo> repos) {
         mReposAdapter.setRibots(repos);
         mReposAdapter.notifyDataSetChanged();
     }

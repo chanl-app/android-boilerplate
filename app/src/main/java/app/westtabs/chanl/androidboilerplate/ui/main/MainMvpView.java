@@ -8,7 +8,7 @@ import dao.greenrobot.dao.User;
 
 public interface MainMvpView extends MvpView {
 
-    void showRibots(List<Repo> ribots);
+    void showRepos(List<Repo> ribots);
 
     void showRibotsEmpty();
     void showError();

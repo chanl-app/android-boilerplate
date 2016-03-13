@@ -1,5 +1,6 @@
 package app.westtabs.chanl.androidboilerplate.data;
 
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,12 +38,12 @@ public class DataManager {
 
     public Observable<User> syncUser(String username) {
         return mRibotsService.getUser(username)
-                .doOnNext(mDatabaseHelper::setUser);
+                .doOnNext(mDatabaseHelper::saveUser);
     }
 
     public Observable<List<Repo>> syncUserRepos(String username) {
-        return mRibotsService.getUserRepos(username);
-//                .doOnNext(repos -> postEventAction(new OnReposListReadyEvent(repos)));
+        return mRibotsService.getUserRepos(username)
+                .onErrorResumeNext(Observable.just(Collections.emptyList()));
     }
 
     public Observable<List<Repo>> getRepos() {

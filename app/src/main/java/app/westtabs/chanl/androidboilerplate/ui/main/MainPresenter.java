@@ -34,15 +34,23 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     public void getUser(String username) {
         checkViewAttached();
-
         mSubscription = mDataManager.syncUser(username)
-                .doOnNext(user -> Observable.just(getMvpView().showUser(user))
-                        .observeOn(AndroidSchedulers.mainThread()))
-                .flatMap(user -> mDataManager.syncUserRepos(user.getLogin()))
+                .doOnNext(user ->
+                        mDataManager.syncUserRepos(user.getLogin())
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(repos -> getMvpView().showRepos(repos)))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnError(Throwable::printStackTrace)
-                .subscribe(repos -> getMvpView().showRibots(repos));
+                .onErrorResumeNext(throwable -> {
+                    throwable.printStackTrace();
+                    getMvpView().showToast("User not found");
+                    return Observable.empty();
+                })
+                .subscribe(user -> getMvpView().showUser(user));
     }
 
+//    public void getRepos(String login) {
+//        checkViewAttached();
+//        return mDataManager.syncUserRepos(login);
+//    }
 }
