@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,6 +22,7 @@ import javax.inject.Inject;
 import app.westtabs.chanl.androidboilerplate.R;
 import app.westtabs.chanl.androidboilerplate.data.SyncService;
 import app.westtabs.chanl.androidboilerplate.ui.base.BaseActivity;
+import app.westtabs.chanl.androidboilerplate.ui.nfc.NFCActivity;
 import app.westtabs.chanl.androidboilerplate.util.DialogFactory;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -98,6 +101,23 @@ public class MainActivity extends BaseActivity implements MainMvpView {
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.action_nfc){
+           startActivity(new Intent(this, NFCActivity.class));
+            return true;
+
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     /*****

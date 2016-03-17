@@ -1,35 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="app.westtabs.chanl.androidboilerplate" >
+    package="app.westtabs.chanl.androidboilerplate">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name="app.westtabs.chanl.androidboilerplate.BoilerplateApplication"
+        android:name=".BoilerplateApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name="app.westtabs.chanl.androidboilerplate.ui.main.MainActivity"
-            android:label="@string/app_name" >
+            android:name=".ui.main.MainActivity"
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <service android:name="app.westtabs.chanl.androidboilerplate.data.SyncService"/>
+        <service android:name=".data.SyncService" />
 
         <receiver
-            android:name="app.westtabs.chanl.androidboilerplate.data.SyncService$SyncOnConnectionAvailable"
+            android:name=".data.SyncService$SyncOnConnectionAvailable"
             android:enabled="false">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".ui.nfc.NFCActivity"
+            android:label="@string/title_activity_nfc"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

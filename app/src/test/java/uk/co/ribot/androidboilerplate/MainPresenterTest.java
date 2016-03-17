@@ -48,6 +48,7 @@ public class MainPresenterTest {
     @Test
     public void loadUser() {
         User user = TestDataFactory.generateUser();
+//        TestDataFactory.generateList(User.class, 3);
 
         doReturn(Observable.just(TestDataFactory.makeListRepos(5)))
                 .when(mMockDataManager)

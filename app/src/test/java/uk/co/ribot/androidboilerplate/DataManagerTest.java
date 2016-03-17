@@ -12,8 +12,16 @@ import app.westtabs.chanl.androidboilerplate.data.DataManager;
 import app.westtabs.chanl.androidboilerplate.data.local.DatabaseHelper;
 import app.westtabs.chanl.androidboilerplate.data.local.PreferencesHelper;
 import app.westtabs.chanl.androidboilerplate.data.remote.ApiService;
+import app.westtabs.chanl.androidboilerplate.test.common.TestDataFactory;
 import app.westtabs.chanl.androidboilerplate.util.EventPosterHelper;
 import dao.greenrobot.dao.Repo;
+import dao.greenrobot.dao.User;
+import rx.Observable;
+import rx.observers.TestSubscriber;
+
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * This test class performs local unit tests without dependencies on the Android framework
@@ -43,31 +51,35 @@ public class DataManagerTest {
     }
 
     @Test
-    public void syncRibotsEmitsValues() {
-//        List<Ribot> ribots = Arrays.asList(TestDataFactory.makeRibot("r1"),
-//                TestDataFactory.makeRibot("r2"));
-//        stubSyncRibotsHelperCalls(ribots);
-//
-//        TestSubscriber<Ribot> result = new TestSubscriber<>();
-//        mDataManager.syncUser().subscribe(result);
-//        result.assertNoErrors();
-//        result.assertReceivedOnNext(ribots);
+    public void syncUsersEmitsValues() {
+        List<Repo> repos = TestDataFactory.makeListRepos(3);
+        User user = TestDataFactory.generateUser();
+        stubSyncRibotsHelperCalls(user, repos);
+
+        TestSubscriber<Repo> result = new TestSubscriber<>();
+
+        mDataManager.syncUserRepos(user.getLogin())
+                .flatMap(Observable::from)
+                .subscribe(result);
+        result.assertNoErrors();
+        result.assertReceivedOnNext(repos);
     }
 
     @Test
-    public void syncRibotsCallsApiAndDatabase() {
-//        List<Ribot> ribots = Arrays.asList(TestDataFactory.makeRibot("r1"),
-//                TestDataFactory.makeRibot("r2"));
-//        stubSyncRibotsHelperCalls(ribots);
-//
-//        mDataManager.syncUser().subscribe();
-//        // Verify right calls to helper methods
-//        verify(mMockRibotsService).getUserRepos();
-//        verify(mMockDatabaseHelper).saveUser(ribots);
+    public void syncUserCallsApiAndDatabase() {
+
+        List<Repo> repos = TestDataFactory.makeListRepos(3);
+        User user = TestDataFactory.generateUser();
+        stubSyncRibotsHelperCalls(user, repos);
+
+        mDataManager.syncUser(user.getLogin()).subscribe();
+        // Verify right calls to helper methods
+        verify(mMockRibotsService).getUserRepos(user.getLogin());
+        verify(mMockDatabaseHelper).saveUser(user);
     }
 
     @Test
-    public void syncRibotsDoesNotCallDatabaseWhenApiFails() {
+    public void syncUserDoesNotCallDatabaseWhenApiFails() {
 //        when(mMockRibotsService.getUserRepos())
 //                .thenReturn(Observable.<List<Ribot>>error(new RuntimeException()));
 //
@@ -77,12 +89,17 @@ public class DataManagerTest {
 //        verify(mMockDatabaseHelper, never()).saveUser(anyListOf(Ribot.class));
     }
 
-    private void stubSyncRibotsHelperCalls(List<Repo> ribots) {
+    private void stubSyncRibotsHelperCalls(User user, List<Repo> repos) {
 //        // Stub calls to the ribot service and database helper.
-//        when(mMockRibotsService.getUserRepos())
-//                .thenReturn(Observable.just(ribots));
-//        when(mMockDatabaseHelper.saveUser(ribots))
-//                .thenReturn(Observable.from(ribots));
+        doReturn(Observable.just(repos))
+                .when(mMockRibotsService)
+                .getUserRepos(user.getLogin());
+
+        when(mMockDatabaseHelper.saveUser(user))
+                .thenReturn(Observable.just(user));
+        doReturn(Observable.just(user))
+                .when(mMockRibotsService)
+                .getUser(user.getLogin());
     }
 
 }
